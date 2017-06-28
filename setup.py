@@ -10,7 +10,7 @@ REQUIREMENTS = [
 ]
 
 setup(
-    name='incapsula-cracker-py3',
+    name='mysqlalchemy',
     version=VERSION,
     packages=['mysqlalchemy'],
     url='https://github.com/ziplokk1/mysqlalchemy',
