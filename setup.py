@@ -13,11 +13,11 @@ setup(
     name='incapsula-cracker-py3',
     version=VERSION,
     packages=['mysqlalchemy'],
-    url='https://github.com/ziplokk1/incapsula-cracker-py3',
+    url='https://github.com/ziplokk1/mysqlalchemy',
     license='LICENSE.txt',
     author='Mark Sanders',
     author_email='sdscdeveloper@gmail.com',
     install_requires=REQUIREMENTS,
-    description='A way to bypass incapsula robot checks when using requests.',
+    description='MySQL wrapper for sqlalchemy.',
     include_package_data=True
 )
