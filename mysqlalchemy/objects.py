@@ -79,24 +79,32 @@ class Connection(object):
         # If `url` was not passed into kwargs
         # and the environment variable supplied by env_db_url was not found
         # and DB_URL environment variable is not set...
-        db_url = os.getenv(env_db_url) or kwargs.pop('url', None)
+        db_url = os.getenv(env_db_url) or kwargs.get('url', None)
+        # remove url from kwargs since if the DB_URL env was set and URL was still supplied, then
+        # the url argument will remain in kwargs and mess up the kwargs being passed to create_engine
+        kwargs.pop('url', None)
+
         if not db_url:
             raise ValueError('Param `url` is required if param `env_db_url` is not supplied and \'DB_URL\' environment variable is not set.')
 
         db_user = os.getenv(env_db_user)
         db_pass = os.getenv(env_db_pass)
 
+        echo = kwargs.pop('echo', False)
+
         # If using connect_args to establish connection.
         if kwargs.get('connect_args'):
             connect_args = kwargs.pop('connect_args')
         else:
             connect_args = kwargs
+            kwargs = {}
 
         # Update connect args to use the environment variables if they exist.
         connect_args['user'] = db_user or connect_args.get('user')
         connect_args['passwd'] = db_pass or connect_args.get('passwd')
+        kwargs = {'echo': echo, 'connect_args': connect_args}
 
-        engine = create_engine(db_url, connect_args=connect_args, **kwargs)
+        engine = create_engine(db_url, **kwargs)
         Session = sessionmaker(engine, class_=MysqlSession)
         self.context_manager = Transaction(Session)
 

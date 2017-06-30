@@ -6,6 +6,9 @@ from .errors import get_error
 
 class MysqlSession(_Session):
 
+    def __init__(self, *args, **kwargs):
+        super(MysqlSession, self).__init__(*args, **kwargs)
+
     def _do_method(self, f, *args, **kwargs):
         try:
             return f(*args, **kwargs)
@@ -18,10 +21,10 @@ class MysqlSession(_Session):
             raise
 
     def execute(self, clause, params=None, mapper=None, bind=None, **kw):
-        return self._do_method(super().execute, clause, params=params, mapper=mapper, bind=bind, **kw)
+        return self._do_method(super(MysqlSession, self).execute, clause, params=params, mapper=mapper, bind=bind, **kw)
 
     def commit(self):
-        return self._do_method(super().commit)
+        return self._do_method(super(MysqlSession, self).commit)
 
 
 class sessionmaker(_sessionmaker):
