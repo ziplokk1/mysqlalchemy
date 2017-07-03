@@ -19,10 +19,16 @@ class Transaction(object):
         self.instance = None
 
     def __enter__(self):
+        return self.open()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def open(self):
         self.instance = self.Class()
         return self.instance
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def close(self):
         self.instance.close()
         self.instance = None
 
@@ -115,4 +121,10 @@ class Connection(object):
         :rtype: Transaction
         :return:
         """
+        return self.open()
+
+    def open(self):
         return self.context_manager
+
+    def close(self):
+        return self.context_manager.close()
