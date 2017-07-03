@@ -121,10 +121,10 @@ class Connection(object):
         :rtype: Transaction
         :return:
         """
-        return self.open()
+        return self.context_manager
 
     def open(self):
-        return self.context_manager
+        return self.context_manager.open()
 
     def close(self):
         return self.context_manager.close()
